@@ -26,7 +26,7 @@ project_2_page = st.Page(
 
 
 project_3_page = st.Page(
-    title="Chat GPT Chatbot",
+    title="LLM Chatbot",
     page="pages/chat_bot.py",
     icon=":material/smart_toy:"
 )
