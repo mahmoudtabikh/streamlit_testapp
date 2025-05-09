@@ -74,11 +74,13 @@ st.write(f"<hr style='border: 2px solid {PRIMARY_COLOR}; margin: 20px 0;' />", u
 st.markdown("## Skills")
 st.write(
     """
-    - 🐍 **Programming Languages**: Python, R, SQL
-    - 🤖 **Machine Learning Frameworks**: Scikit-learn, TensorFlow, Keras, PyTorch
+    It's hard to mention every single skill or technology I have worked with, but here are some of the most relevant ones:
+    - 🐍 **Programming Languages**: Python, SQL
+    - 🤖 **Machine Learning Frameworks**: Scikit-learn, PyTorch
     - 📊 **Data Visualization**: Matplotlib, Seaborn, Plotly
-    - 💾 **Big Data Technologies**: Hadoop, Spark
-    - ☁️ **Cloud Technologies**: AWS, Azure
+    - 💾 **Machine vision libraries**: OpenCV, NumPY, Pillow, SciPy and albumentations
+    - ☁️ **Tools**: Git, Jupyter, docker, streamlit, Azure, AWS.
+    - 🗄️ **Databases**: Pandas, and some SQL knwoledge.
     """
 )
 
