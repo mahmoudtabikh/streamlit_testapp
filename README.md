@@ -1,7 +1,6 @@
 # Portfolio — Streamlit Test App
 
-Live demo / portfolio page: https://YOUR-WEBSITE.example.com  
-(Replace the URL above with the public link you share with recruiters.)
+Live demo / portfolio page: https://mahmoud-tabikh-aboutme.streamlit.app/
 
 Elevator
 - A focused demo of applied ML engineering: robust image segmentation (background removal), an explainable on-device binary-classifier (Grad‑CAM), and pragmatic developer tooling for reliable demos.  
