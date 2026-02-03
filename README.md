@@ -1,44 +1,71 @@
-# Streamlit Test App — demo & developer notes 🚀
+# Portfolio — Streamlit Test App
 
-Live demo / personal page: https://YOUR-WEBSITE.example.com  
-> Replace the URL above with your public webpage or demo link — it will appear at the top of the repo and in any README preview.
+Live demo / portfolio page: https://YOUR-WEBSITE.example.com  
+(Replace the URL above with the public link you share with recruiters.)
 
-Short description
-- A compact Streamlit multipage demo showcasing image segmentation (background removal), an on-device binary-classification explorer (with Grad‑CAM), and developer tooling for robust local demos.
+Elevator — what I want reviewers to see
+- A focused demo of applied ML engineering: robust image segmentation (background removal), an explainable on-device binary-classifier (Grad‑CAM), and pragmatic developer tooling for reliable demos.  
+- Emphasis: production-minded fixes (robust upload handling, secrets safety, session-state recovery) and clear trade-offs made for demo reliability.
 
-Key features (what I implemented) ✅
-- Background Remover (`pages/background_removal.py`)
-  - YOLOv8 segmentation (checked-in `yolov8n-seg.pt`), mask refinement (dilate/erode/feather), precise mask resizing and RGBA export.
-  - Download transparent PNGs and replace backgrounds with solid colors or images.
-- Binary Classification Explorer (`pages/binary_classification.py`)
-  - On-device linear-probe training on pretrained features (ResNet18 / MobileNetV2), quick evaluation UI, and Grad‑CAM explainability with downloadable heatmaps.
-- Segmentation demo (`pages/segmentation_model.py`) — smaller, focused example of YOLOv8 masks.
-- Developer ergonomics (`streamlit_app.py`)
-  - Dev Mode fallbacks, cache & session-state clearing tools, robust upload handling (case-insensitive extensions), and informative error messages.
-- Safe-by-default changes
-  - Removed/archived the unreliable LLM chatbot from the public UI (archived in repo history), fixed import-time secret reads, and prevented UI crashes caused by emoji/widget state.
+Highlights — accomplishments you can call out in interviews ✅
+- Built a production-style background-removal pipeline (YOLOv8 + mask refinement → downloadable transparent PNG). Key fixes: deterministic mask resizing, morphological refinement, and alpha composition.
+- Implemented an on-device Binary Classification Explorer that trains a linear probe on pretrained features and provides Grad‑CAM explainability — useful for rapid prototyping and client demos.
+- Hardened app stability: removed import-time secret access, fixed Streamlit widget deserialization issues (.JPG/.PNG edge cases), added Dev Mode CPU fallbacks and cache/session recovery tools.
+- Added lightweight, import-free CI checks to prevent reintroducing deprecated APIs and UI anti-patterns (practical safety guardrails for small ML demos).
 
-Where to find the main code (quick map) 🗺️
-- App entry: `streamlit_app.py`
-- Background remover: `pages/background_removal.py`
-- Segmentation demo: `pages/segmentation_model.py`
-- Binary classifier + Grad‑CAM: `pages/binary_classification.py`
-- Contact form / secrets handling: `forms/contact.py`
-- Developer/dev-tests: `tests/test_deprecations.py`, `.github/workflows/ci.yml`
+Tech summary (short)
+- Frameworks: Streamlit (UI), PyTorch (models / torchvision), ultralytics (YOLOv8), OpenCV/Pillow (image I/O), numpy/pandas for utilities.
+- Patterns: device-aware fallbacks (GPU→CPU), cached model loading, explainability (Grad‑CAM), runtime-safe secrets access, and small static CI tests.
 
-CI & tests
-- A lightweight static CI test prevents reintroducing deprecated APIs: `pytest -q tests/test_deprecations.py`.
-- GitHub Actions workflow provided in `.github/workflows/ci.yml` — runs on push/PR.
+Review guide — files & things to highlight (for technical reviewers) 🔎
+- Core features
+  - `pages/background_removal.py` — mask extraction, resizing, morphological refine, RGBA compose & PNG download. (Look at mask-resize + alpha-compose for the bug fix.)
+  - `pages/binary_classification.py` — feature extraction, linear-head training loop, and the Grad‑CAM implementation.
+  - `pages/segmentation_model.py` — compact YOLOv8 segmentation example and visualization code.
+- App scaffolding & robustness
+  - `streamlit_app.py` — navigation, developer tools (cache/session clearing), and UI sanitizers.
+  - `forms/contact.py` — runtime-safe secrets lookup and webhook simulation for local demos.
+- Quality & CI
+  - `tests/test_deprecations.py` — static checks preventing risky patterns (no heavy ML imports so CI stays fast).
+  - `.github/workflows/ci.yml` — pipeline that runs the static checks on push/PR.
 
-Developer notes & status
-- Production-ready: core features (background remover, binary explorer, segmentation demo) are implemented and wired into navigation.
-- Archived: the LLM chatbot was intentionally removed from the UI due to reliability/hallucination concerns; the code is preserved in repo history if its would be restored for research.
-- Recommended next steps: (1) set your live-demo URL at the top of this README, (2) add a small example dataset for the Binary Explorer, (3) enable CI badge + optional auto-deploy.
+Why these choices matter (concise reasoning)
+- Demonstrates pragmatic engineering: reproducible demos that fail gracefully (important for client-facing prototypes).  
+- Balances UX vs. fidelity: checked-in small weights for instant demos, Dev Mode & CPU fallbacks for reproducibility across varied reviewer machines.
+- Safety-first: removed brittle features (no public LLM) and added tests to prevent regressions that would break demos.
 
-Contact & contributions
-- For quick help, open an issue or push a branch and ask me to: verify remote HEAD, run the app and paste the cleaned terminal log, or add an example dataset and demo GIF.
+What to demo (quick script for a recruiter) — 2 minutes
+1. Open the live demo (or run locally) and show the Background Remover: upload a photo → refine mask → download a transparent PNG.  
+2. Open Binary Classification Explorer: add a couple of positive/negative images, train the linear head (seconds), show Grad‑CAM heatmap and downloadable artifact.  
+3. Sidebar → Developer tools → Clear caches & restart (shows reliability-focused UX).
+
+Talking points / interview prompts (use these to probe depth) 🎯
+- Walk me through the mask-resize bug: how did you reproduce it and what fixes did you apply? (Expect: deterministic resizing + unit-checks.)
+- Why keep small weights in-repo for demos? Discuss trade-offs and deployment alternatives. (Expect: UX vs. security/cost trade-off.)
+- Show the Grad‑CAM implementation and explain limitations for small linear probes.
+
+Quick reproduction (only if needed)
+- Minimal: `streamlit run streamlit_app.py` (app contains in-app Developer tools for common recovery actions).  
+- Full dev: see `requirements.txt` if you need to run locally, but reproduction steps are intentionally de-emphasized here — this README is a portfolio entry, not a tutorial.
+
+Signals for recruiters (what this repo demonstrates)
+- End-to-end ML demo + explainability, pragmatic engineering for robustness, CI coverage for safety, and clear trade-offs documented in code and README.
+
+Next steps I recommend (pick one)
+- Add a short GIF (10–15s) of the Background Remover for the GitHub preview.  
+- Add one small exemplar dataset and a single-click "Populate examples" button in the Binary Explorer.  
+- Add CI badge and a short PR changelog for easier reviewer onboarding.
+
+Where to look in git (quick commands)
+- Recent commits: `git log -n 8 --oneline`  
+- Show staged/unpushed changes: `git status --porcelain`  
+- Get the HEAD sha to reference in your portfolio: `git rev-parse --short HEAD`
+
+Contact / links
+- Live demo: https://YOUR-WEBSITE.example.com  
+- Replace the demo URL above with your public profile (LinkedIn / personal site) for recruiter-facing shares.
 
 License
-- MIT — feel free to reuse or adapt for demos and internal prototypes.
+- MIT — suitable for demos and portfolio use.
 
 ---
