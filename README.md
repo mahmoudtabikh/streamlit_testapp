@@ -26,52 +26,13 @@ Where to find the main code (quick map) 🗺️
 - Contact form / secrets handling: `forms/contact.py`
 - Developer/dev-tests: `tests/test_deprecations.py`, `.github/workflows/ci.yml`
 
-Run locally (Windows) — 3 commands
-1) Create & activate venv
-   ```powershell
-   python -m venv .venv
-   .\.venv\Scripts\Activate.ps1
-   ```
-2) Install
-   ```powershell
-   pip install -r requirements.txt
-   ```
-3) Start
-   ```powershell
-   streamlit run streamlit_app.py
-   ```
-Open http://localhost:8501 (or your configured port).
-
-Quick troubleshooting (Exit Code 1 / common Windows fixes) ⚠️
-- Clear Streamlit state and restart:
-  - In-app: Sidebar → Developer tools → "Clear caches and restart" ✅
-  - CLI: `streamlit cache clear` then re-run the app.
-- Secrets: ensure `.streamlit/secrets.toml` exists or use the UI's simulate-send option in the Contact form.
-- Upload errors (.JPG/.PNG not accepted): the app accepts uppercase extensions — if you see a stale widget error, clear session-state or restart Streamlit.
-- If segmentation fails: confirm `yolov8n-seg.pt` is present in the repo root and `ultralytics` is installed.
-
-How to verify your pushed changes (git) 🔎
-- Local checks:
-  ```bash
-  git status --porcelain
-  git log -n 5 --oneline
-  git branch --show-current
-  ```
-- Confirm remote HEAD and last push:
-  ```bash
-  git remote -v
-  git fetch --all --quiet
-  git rev-parse --short HEAD
-  ```
-Tell me when you want me to run these and I'll report the remote URL + HEAD sha.
-
 CI & tests
 - A lightweight static CI test prevents reintroducing deprecated APIs: `pytest -q tests/test_deprecations.py`.
 - GitHub Actions workflow provided in `.github/workflows/ci.yml` — runs on push/PR.
 
 Developer notes & status
 - Production-ready: core features (background remover, binary explorer, segmentation demo) are implemented and wired into navigation.
-- Archived: the LLM chatbot was intentionally removed from the UI due to reliability/hallucination concerns; the code is preserved in repo history if you want it restored for research.
+- Archived: the LLM chatbot was intentionally removed from the UI due to reliability/hallucination concerns; the code is preserved in repo history if its would be restored for research.
 - Recommended next steps: (1) set your live-demo URL at the top of this README, (2) add a small example dataset for the Binary Explorer, (3) enable CI badge + optional auto-deploy.
 
 Contact & contributions
@@ -81,8 +42,3 @@ License
 - MIT — feel free to reuse or adapt for demos and internal prototypes.
 
 ---
-If you'd like, I can (pick one):
-1) verify your remote push now and report the repo URL + HEAD sha, or
-2) restart the app here and paste the cleaned terminal log so we confirm Exit Code 0.
-
-Tell me which and I'll do it next. 🎯
