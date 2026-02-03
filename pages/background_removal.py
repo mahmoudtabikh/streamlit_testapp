@@ -23,6 +23,7 @@ def load_model(path: str = "yolov8n-seg.pt"):
 model = load_model()
 
 st.markdown("Upload an image, select the detected instances you want to keep, refine the mask, then download a PNG with a transparent background.")
+st.markdown("I created this page because many websites are charging for this simple functionality — enjoy! 😊")
 
 uploaded = st.file_uploader(
     "Upload image (jpg, png)",
