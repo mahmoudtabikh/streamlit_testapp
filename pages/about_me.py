@@ -86,13 +86,14 @@ st.write(f"<hr style='border: 2px solid {PRIMARY_COLOR}; margin: 20px 0;' />", u
 st.markdown("## Skills")
 st.write(
     """
-    It's hard to mention every single skill or technology I have worked with, but here are some of the most relevant ones:
-    - **Programming Languages**: Python, SQL
-    - **Machine Learning Frameworks**: Scikit-learn, PyTorch
-    - **Data Visualization**: Matplotlib, Seaborn, Plotly
-    - **Machine vision libraries**: OpenCV, NumPY, Pillow, SciPy and albumentations
-    - **Tools**: Git, Jupyter, docker, streamlit, Azure, AWS.
-    - **Databases**: Pandas, and some SQL knwoledge.
+    I’ve worked with a wide range of tools and technologies across production ML systems. Below are the ones most relevant to my day-to-day work:
+    - **Programming Languages**: Python, SQL  
+    - **Machine Learning & Deep Learning**: PyTorch, scikit-learn  
+    - **Computer Vision**: OpenCV, NumPy, Pillow, SciPy, Albumentations  
+    - **Modeling & Architectures**: CNNs, EfficientNet, U-Net, segmentation & binary classification pipelines  
+    - **Data & Experimentation**: Pandas, Jupyter Notebooks  
+    - **Visualization**: Matplotlib, Seaborn, Plotly  
+    - **Tools & Platforms**: Git, Docker, Streamlit, Azure DevOps, Linux  
     """
 )
 
