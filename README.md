@@ -41,9 +41,12 @@ A small demo Streamlit app with examples: an Open‑source LLM chatbot and an im
   - Remove image backgrounds using the included `yolov8n-seg.pt` segmentation model
   - Refine mask (dilate/erode/feather), replace with solid/image background, and download PNG with alpha
 
-- `Chatbot` (pages/chat_bot.py)
-  - Open-source LLM frontend with **Dev Mode** (runs small local models like `distilgpt2` for offline/dev use)
-  - Supports streaming (token-by-token) when your `transformers` version provides `TextIteratorStreamer`
+- **Binary Classification Explorer** (pages/binary_classification.py)
+  - Interactive end-to-end demo: upload a few positive/negative images, train a tiny linear head on pretrained features (ResNet18 / MobileNetV2), then evaluate patches.
+  - Includes confidence visualization and Grad‑CAM heatmaps for explainability — intended as a demo of ML + explainability for prototyping or consulting demos.
+
+  - Rationale: the LLM produced unreliable outputs (hallucinations) that could mislead users. The feature was removed to avoid presenting unsafe or incorrect information.  
+  - Status: archived for rework — consider retrieval-augmented approaches or deterministic rule-based assistants if you need factual reliability.
 
 - Other pages: `About Me`, utilities, and examples.
 
@@ -96,6 +99,15 @@ streamlit run streamlit_app.py --server.port 8502 --server.address 0.0.0.0
 ---
 
 ## Tests & developer tips
+
+- A lightweight CI check now blocks reintroducing deprecated or risky APIs (see `tests/test_deprecations.py`). The check is static (no heavy ML imports) and runs on GitHub Actions.
+
+- Run the static deprecation test locally:
+
+```bash
+python -m pip install -U pytest
+pytest -q tests/test_deprecations.py
+```
 
 - Use **Dev Mode** in the Chatbot page for fast iteration without large downloads.  
 - Background remover uses the checked-in `yolov8n-seg.pt` by default — replace with a different model by editing the page or dropping new weights in the project root.

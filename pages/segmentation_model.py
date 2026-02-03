@@ -18,11 +18,26 @@ def load_model(model_path="yolov8n-seg.pt"):
 
 model = load_model()
 
-# Upload image
-uploaded_file = st.file_uploader("Upload an image", type=["jpg", "jpeg", "png"])
+# Upload image — avoid using the `type=` widget validation so filenames like `.JPG` don't get rejected by an older serialized widget state
+# (we validate the extension at runtime in a case-insensitive way).
+uploaded_file = st.file_uploader(
+    "Upload an image (jpg, jpeg, png)",
+    key="seg_upload_v2",
+)
 
 if uploaded_file:
-    image = Image.open(uploaded_file).convert("RGB")
+    # runtime validation (case-insensitive) and friendly error messages
+    name = getattr(uploaded_file, "name", "")
+    if not name.lower().endswith((".jpg", ".jpeg", ".png")):
+        st.error("Unsupported file extension. Please upload a JPG/JPEG/PNG image (extensions are case-insensitive).")
+        st.stop()
+
+    try:
+        image = Image.open(uploaded_file).convert("RGB")
+    except Exception as e:
+        st.error(f"Unable to open image: {e}")
+        st.stop()
+
     st.image(image, caption="Uploaded Image", use_container_width=True)
 
     # Run inference

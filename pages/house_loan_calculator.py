@@ -24,7 +24,7 @@ total_paid = monthly_payment * months
 total_interest = total_paid - house_cost
 
 # Display results
-st.subheader("📊 Loan Summary")
+st.subheader("Loan Summary")
 st.write(f"**Monthly Payment:** €{monthly_payment:,.2f}")
 st.write(f"**Total Paid Over {years} Years:** €{total_paid:,.2f}")
 st.write(f"**Total Interest Paid:** €{total_interest:,.2f}")
