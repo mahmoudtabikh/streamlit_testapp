@@ -1,117 +1,88 @@
-# Streamlit Test App
+# Streamlit Test App — demo & developer notes 🚀
 
-A small demo Streamlit app with examples: an Open‑source LLM chatbot and an image background-removal tool (YOLOv8 segmentation). 
+Live demo / personal page: https://YOUR-WEBSITE.example.com  
+> Replace the URL above with your public webpage or demo link — it will appear at the top of the repo and in any README preview.
 
-🔗 Local app URL (development):
+Short description
+- A compact Streamlit multipage demo showcasing image segmentation (background removal), an on-device binary-classification explorer (with Grad‑CAM), and developer tooling for robust local demos.
 
-- http://localhost:8501
+Key features (what I implemented) ✅
+- Background Remover (`pages/background_removal.py`)
+  - YOLOv8 segmentation (checked-in `yolov8n-seg.pt`), mask refinement (dilate/erode/feather), precise mask resizing and RGBA export.
+  - Download transparent PNGs and replace backgrounds with solid colors or images.
+- Binary Classification Explorer (`pages/binary_classification.py`)
+  - On-device linear-probe training on pretrained features (ResNet18 / MobileNetV2), quick evaluation UI, and Grad‑CAM explainability with downloadable heatmaps.
+- Segmentation demo (`pages/segmentation_model.py`) — smaller, focused example of YOLOv8 masks.
+- Developer ergonomics (`streamlit_app.py`)
+  - Dev Mode fallbacks, cache & session-state clearing tools, robust upload handling (case-insensitive extensions), and informative error messages.
+- Safe-by-default changes
+  - Removed/archived the unreliable LLM chatbot from the public UI (archived in repo history), fixed import-time secret reads, and prevented UI crashes caused by emoji/widget state.
 
-(Use the **sidebar** to navigate pages or append a page query, e.g. `?page=Background%20Remover` — URL-encoding may be required.)
+Where to find the main code (quick map) 🗺️
+- App entry: `streamlit_app.py`
+- Background remover: `pages/background_removal.py`
+- Segmentation demo: `pages/segmentation_model.py`
+- Binary classifier + Grad‑CAM: `pages/binary_classification.py`
+- Contact form / secrets handling: `forms/contact.py`
+- Developer/dev-tests: `tests/test_deprecations.py`, `.github/workflows/ci.yml`
 
----
-
-## Quick start (Windows)
-
-1. Create & activate a virtualenv (recommended):
-
+Run locally (Windows) — 3 commands
+1) Create & activate venv
    ```powershell
    python -m venv .venv
    .\.venv\Scripts\Activate.ps1
    ```
-
-2. Install dependencies:
-
+2) Install
    ```powershell
    pip install -r requirements.txt
    ```
-
-3. Run the app:
-
+3) Start
    ```powershell
    streamlit run streamlit_app.py
    ```
+Open http://localhost:8501 (or your configured port).
 
-4. Open the app in your browser at: `http://localhost:8501` ✅
+Quick troubleshooting (Exit Code 1 / common Windows fixes) ⚠️
+- Clear Streamlit state and restart:
+  - In-app: Sidebar → Developer tools → "Clear caches and restart" ✅
+  - CLI: `streamlit cache clear` then re-run the app.
+- Secrets: ensure `.streamlit/secrets.toml` exists or use the UI's simulate-send option in the Contact form.
+- Upload errors (.JPG/.PNG not accepted): the app accepts uppercase extensions — if you see a stale widget error, clear session-state or restart Streamlit.
+- If segmentation fails: confirm `yolov8n-seg.pt` is present in the repo root and `ultralytics` is installed.
 
----
+How to verify your pushed changes (git) 🔎
+- Local checks:
+  ```bash
+  git status --porcelain
+  git log -n 5 --oneline
+  git branch --show-current
+  ```
+- Confirm remote HEAD and last push:
+  ```bash
+  git remote -v
+  git fetch --all --quiet
+  git rev-parse --short HEAD
+  ```
+Tell me when you want me to run these and I'll report the remote URL + HEAD sha.
 
-## Pages / features ✨
+CI & tests
+- A lightweight static CI test prevents reintroducing deprecated APIs: `pytest -q tests/test_deprecations.py`.
+- GitHub Actions workflow provided in `.github/workflows/ci.yml` — runs on push/PR.
 
-- `Background Remover` (pages/background_removal.py)
-  - Remove image backgrounds using the included `yolov8n-seg.pt` segmentation model
-  - Refine mask (dilate/erode/feather), replace with solid/image background, and download PNG with alpha
+Developer notes & status
+- Production-ready: core features (background remover, binary explorer, segmentation demo) are implemented and wired into navigation.
+- Archived: the LLM chatbot was intentionally removed from the UI due to reliability/hallucination concerns; the code is preserved in repo history if you want it restored for research.
+- Recommended next steps: (1) set your live-demo URL at the top of this README, (2) add a small example dataset for the Binary Explorer, (3) enable CI badge + optional auto-deploy.
 
-- **Binary Classification Explorer** (pages/binary_classification.py)
-  - Interactive end-to-end demo: upload a few positive/negative images, train a tiny linear head on pretrained features (ResNet18 / MobileNetV2), then evaluate patches.
-  - Includes confidence visualization and Grad‑CAM heatmaps for explainability — intended as a demo of ML + explainability for prototyping or consulting demos.
+Contact & contributions
+- For quick help, open an issue or push a branch and ask me to: verify remote HEAD, run the app and paste the cleaned terminal log, or add an example dataset and demo GIF.
 
-  - Rationale: the LLM produced unreliable outputs (hallucinations) that could mislead users. The feature was removed to avoid presenting unsafe or incorrect information.  
-  - Status: archived for rework — consider retrieval-augmented approaches or deterministic rule-based assistants if you need factual reliability.
-
-- Other pages: `About Me`, utilities, and examples.
-
----
-
-## Important files
-
-- `streamlit_app.py` — app entrypoint
-- `pages/` — Streamlit multipage app source files
-- `yolov8n-seg.pt` — YOLOv8 segmentation weights (checked into this workspace)
-- `requirements.txt` — Python dependencies
-
----
-
-## Secrets & credentials
-
-To use the full (production) chatbot with hosted HF models, add your Hugging Face token to Streamlit secrets:
-
-Create `.streamlit/secrets.toml` with:
-
-```toml
-HUGGING_FACE_API_KEY = "hf_...your_token..."
-```
-
-- Without a token, the app auto-enables **Dev Mode** so you can still test locally.
+License
+- MIT — feel free to reuse or adapt for demos and internal prototypes.
 
 ---
+If you'd like, I can (pick one):
+1) verify your remote push now and report the repo URL + HEAD sha, or
+2) restart the app here and paste the cleaned terminal log so we confirm Exit Code 0.
 
-## Common troubleshooting ⚠️
-
-- "Transformer/streaming not available": upgrade `transformers` to a newer release that exposes `TextIteratorStreamer` or disable streaming in the UI.
-- "CUDA / OOM errors": try Dev Mode (small models) or run on a GPU; large models may be slow or fail on CPU.
-- "Segmentation masks not extracted": ensure `ultralytics` matches the code API; the app expects `res.masks.data` or a numpy-compatible mask array.
-
----
-
-## Running on a different port / host
-
-```powershell
-streamlit run streamlit_app.py --server.port 8502 --server.address 0.0.0.0
-```
-
----
-
-## Deployment (quick notes)
-
-- Streamlit Cloud: push to a connected GitHub repo and set the `STREAMLIT_SERVER_PORT` / secrets in the app settings.
-- Docker: build a container from this repo and expose port `8501`.
-
----
-
-## Tests & developer tips
-
-- A lightweight CI check now blocks reintroducing deprecated or risky APIs (see `tests/test_deprecations.py`). The check is static (no heavy ML imports) and runs on GitHub Actions.
-
-- Run the static deprecation test locally:
-
-```bash
-python -m pip install -U pytest
-pytest -q tests/test_deprecations.py
-```
-
-- Use **Dev Mode** in the Chatbot page for fast iteration without large downloads.  
-- Background remover uses the checked-in `yolov8n-seg.pt` by default — replace with a different model by editing the page or dropping new weights in the project root.
-
----
-
-If you want, I can: add a GitHub Actions workflow to auto-deploy to Streamlit Cloud, add a tiny pre-cached dev-model for fully offline testing, or create a short demo GIF. Which would you like next? 🎯
+Tell me which and I'll do it next. 🎯
