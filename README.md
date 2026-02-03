@@ -3,11 +3,11 @@
 Live demo / portfolio page: https://YOUR-WEBSITE.example.com  
 (Replace the URL above with the public link you share with recruiters.)
 
-Elevator — what I want reviewers to see
+Elevator
 - A focused demo of applied ML engineering: robust image segmentation (background removal), an explainable on-device binary-classifier (Grad‑CAM), and pragmatic developer tooling for reliable demos.  
 - Emphasis: production-minded fixes (robust upload handling, secrets safety, session-state recovery) and clear trade-offs made for demo reliability.
 
-Highlights — accomplishments you can call out in interviews ✅
+Highlights
 - Built a production-style background-removal pipeline (YOLOv8 + mask refinement → downloadable transparent PNG). Key fixes: deterministic mask resizing, morphological refinement, and alpha composition.
 - Implemented an on-device Binary Classification Explorer that trains a linear probe on pretrained features and provides Grad‑CAM explainability — useful for rapid prototyping and client demos.
 - Hardened app stability: removed import-time secret access, fixed Streamlit widget deserialization issues (.JPG/.PNG edge cases), added Dev Mode CPU fallbacks and cache/session recovery tools.
@@ -17,7 +17,7 @@ Tech summary (short)
 - Frameworks: Streamlit (UI), PyTorch (models / torchvision), ultralytics (YOLOv8), OpenCV/Pillow (image I/O), numpy/pandas for utilities.
 - Patterns: device-aware fallbacks (GPU→CPU), cached model loading, explainability (Grad‑CAM), runtime-safe secrets access, and small static CI tests.
 
-Review guide — files & things to highlight (for technical reviewers) 🔎
+Review guide — files & things to highlight 🔎
 - Core features
   - `pages/background_removal.py` — mask extraction, resizing, morphological refine, RGBA compose & PNG download. (Look at mask-resize + alpha-compose for the bug fix.)
   - `pages/binary_classification.py` — feature extraction, linear-head training loop, and the Grad‑CAM implementation.
@@ -29,12 +29,12 @@ Review guide — files & things to highlight (for technical reviewers) 🔎
   - `tests/test_deprecations.py` — static checks preventing risky patterns (no heavy ML imports so CI stays fast).
   - `.github/workflows/ci.yml` — pipeline that runs the static checks on push/PR.
 
-Why these choices matter (concise reasoning)
-- Demonstrates pragmatic engineering: reproducible demos that fail gracefully (important for client-facing prototypes).  
+Why these choices matter
+- Demonstrates pragmatic engineering: reproducible demos that fail gracefully.
 - Balances UX vs. fidelity: checked-in small weights for instant demos, Dev Mode & CPU fallbacks for reproducibility across varied reviewer machines.
 - Safety-first: removed brittle features (no public LLM) and added tests to prevent regressions that would break demos.
 
-What to demo (quick script for a recruiter) — 2 minutes
+What to demo — 2 minutes
 1. Open the live demo (or run locally) and show the Background Remover: upload a photo → refine mask → download a transparent PNG.  
 2. Open Binary Classification Explorer: add a couple of positive/negative images, train the linear head (seconds), show Grad‑CAM heatmap and downloadable artifact.  
 3. Sidebar → Developer tools → Clear caches & restart (shows reliability-focused UX).
@@ -48,7 +48,7 @@ Quick reproduction (only if needed)
 - Minimal: `streamlit run streamlit_app.py` (app contains in-app Developer tools for common recovery actions).  
 - Full dev: see `requirements.txt` if you need to run locally, but reproduction steps are intentionally de-emphasized here — this README is a portfolio entry, not a tutorial.
 
-Signals for recruiters (what this repo demonstrates)
+what this repo demonstrates:
 - End-to-end ML demo + explainability, pragmatic engineering for robustness, CI coverage for safety, and clear trade-offs documented in code and README.
 
 Next steps I recommend (pick one)
